@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EmberVale</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="menu">
+    <button id="battleBtn" class="active" onclick="UI.showSection('battle')">⚔️ Battle</button>
+    <button id="shopBtn" onclick="UI.showSection('shop')">🛒 Shop</button>
+    <button id="petsBtn" onclick="UI.showSection('pets')">🐾 Pets</button>
+  </div>
+
+  <h1>EmberVale</h1>
+  
+  <!-- BATTLE SECTION -->
+  <div id="battle" class="section active">
+    <div class="stats">
+      <h2>Player Stats</h2>
+      <p>Level: <span id="level">1</span></p>
+      <p>EXP: <span id="exp">0</span> / <span id="expToLevel">100</span></p>
+      <div class="progress-bar">
+          <div class="progress-fill" id="expBar" style="width: 0%"></div>
+      </div>
+      <p>Attack: <span id="attack">10</span></p>
+      <p>Crit Rate: <span id="critRate">5</span>%</p>
+      <p>Crit Damage: <span id="critDamage">150</span>%</p>
+      <p>Stamina: <span id="stamina">50</span> / <span id="maxStamina">50</span></p>
+      <div class="progress-bar">
+          <div class="progress-fill" id="staminaBar" style="width: 100%"></div>
+      </div>
+      <p>Next Stamina in: <span id="staminaTimer">05:00</span></p>
+      <p>Gold: <span id="gold">100</span></p>
+    </div>
+
+    <div class="mobContainer">
+      <h2>Mobs</h2>
+      <div id="mobsList"></div>
+    </div>
+    
+    <div class="dragon">
+      <h2>Your Dragon</h2>
+      <p>Level: <span id="dragonLevel">1</span></p>
+      <p>EXP: <span id="dragonExp">0</span> / <span id="dragonExpToLevel">50</span></p>
+      <div class="progress-bar">
+          <div class="progress-fill" id="dragonExpBar" style="width: 0%"></div>
+      </div>
+      <p>Passive Bonus: +<span id="dragonBonus">0</span>% damage</p>
+    </div>
+  </div>
+
+  <!-- SHOP SECTION -->
+  <div id="shop" class="section">
+    <div class="shop">
+      <h2>🛒 Shop</h2>
+      <div id="shopItems"></div>
+    </div>
+  </div>
+
+  <!-- PETS SECTION -->
+  <div id="pets" class="section">
+    <div class="pets">
+      <h2>🐾 Your Pets</h2>
+      <div id="petsList"></div>
+    </div>
+  </div>
+
+  <div class="loot-notification" id="lootNotification"></div>
+
+  <!-- Game Scripts -->
+  <script src="js/data/mobData.js"></script>
+  <script src="js/data/petData.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/gameState.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/dragon.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/pets.js"></script>
+  <script src="js/shop.js"></script>
+  <script src="js/mobs.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
