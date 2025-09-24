@@ -98,18 +98,8 @@ const UI = {
         this.updateMobs();
         this.updatePets();
         Shop.create();
-    },
-
-    // Global functions for onclick handlers
-    feedPet(index) {
-        if (Pets.feed(index)) {
-            this.updateAll();
-        }
     }
 };
 
-// Make feedPet globally accessible for onclick handlers
-window.Pets = {
-    ...Pets,
-    feedPet: (index) => UI.feedPet(index)
-};
+// Make UI globally accessible
+window.UI = UI;

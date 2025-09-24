@@ -32,5 +32,15 @@ const Pets = {
             return true;
         }
         return false;
+    },
+
+    // Global function for onclick handlers
+    feedPet(petIndex) {
+        if (this.feed(petIndex)) {
+            UI.updateAll();
+        }
     }
 };
+
+// Make Pets functions globally accessible
+window.Pets = Pets;
