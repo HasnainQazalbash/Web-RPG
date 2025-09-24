@@ -17,13 +17,6 @@ const GameState = {
         critDamage: 150
     },
     
-    dragon: {
-        level: 1,
-        exp: 0,
-        expToLevel: 50,
-        bonus: 0
-    },
-    
     stamina: {
         refillInterval: 5,
         currentTimer: 5

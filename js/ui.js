@@ -19,7 +19,6 @@ const UI = {
     updateStats() {
         const player = GameState.player;
         const combat = GameState.combat;
-        const dragon = GameState.dragon;
         
         document.getElementById("level").innerText = player.level;
         document.getElementById("exp").innerText = Utils.formatNumber(player.exp);
@@ -30,15 +29,11 @@ const UI = {
         document.getElementById("stamina").innerText = player.stamina;
         document.getElementById("maxStamina").innerText = player.maxStamina;
         document.getElementById("gold").innerText = Utils.formatNumber(player.gold);
-        document.getElementById("dragonLevel").innerText = dragon.level;
-        document.getElementById("dragonExp").innerText = dragon.exp;
-        document.getElementById("dragonExpToLevel").innerText = dragon.expToLevel;
-        document.getElementById("dragonBonus").innerText = dragon.bonus;
 
         // Update progress bars
         document.getElementById("expBar").style.width = (player.exp / player.expToLevel * 100) + "%";
         document.getElementById("staminaBar").style.width = (player.stamina / player.maxStamina * 100) + "%";
-        document.getElementById("dragonExpBar").style.width = (dragon.exp / dragon.expToLevel * 100) + "%";
+        // Removed dragon progress bar update
     },
 
     updateMobs() {
@@ -98,8 +93,18 @@ const UI = {
         this.updateMobs();
         this.updatePets();
         Shop.create();
+    },
+
+    // Global functions for onclick handlers
+    feedPet(index) {
+        if (Pets.feed(index)) {
+            this.updateAll();
+        }
     }
 };
 
-// Make UI globally accessible
-window.UI = UI;
+// Make feedPet globally accessible for onclick handlers
+window.Pets = {
+    ...Pets,
+    feedPet: (index) => UI.feedPet(index)
+};

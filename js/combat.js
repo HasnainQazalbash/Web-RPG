@@ -2,7 +2,7 @@
 const Combat = {
     calculateStats() {
         let totalAttack = GameState.player.baseAttack;
-        let damageMultiplier = 1 + (GameState.dragon.bonus / 100);
+        let damageMultiplier = 1; // Removed dragon bonus
         let critRate = 5;
         let critDamage = 150;
 
@@ -68,7 +68,7 @@ const Combat = {
         // Rewards
         Player.gainExp(mob.expReward);
         Player.gainGold(mob.goldReward);
-        Dragon.gainExp(damage);
+        // Removed Dragon.gainExp(damage);
         
         Utils.showLootNotification(mob.expReward, mob.goldReward);
 
