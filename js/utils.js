@@ -4,7 +4,7 @@ const Utils = {
         if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-        return num.toString();
+        return Math.floor(num).toString();
     },
 
     showDamagePopup(damage, isCrit, element) {
@@ -19,18 +19,26 @@ const Utils = {
         
         document.body.appendChild(popup);
         
+        // Remove popup after animation
         setTimeout(() => {
-            document.body.removeChild(popup);
+            if (popup.parentNode) {
+                popup.parentNode.removeChild(popup);
+            }
         }, 1000);
     },
 
     showLootNotification(exp, gold) {
         const notification = document.getElementById('lootNotification');
-        notification.textContent = `+${Utils.formatNumber(exp)} EXP, +${Utils.formatNumber(gold)} Gold!`;
-        notification.classList.add('show');
-        
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 2000);
+        if (notification) {
+            notification.innerHTML = `+${Utils.formatNumber(exp)} EXP, +${Utils.formatNumber(gold)} Gold`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
     }
 };
+
+// Make Utils globally accessible
+window.Utils = Utils;

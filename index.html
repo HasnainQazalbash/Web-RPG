@@ -6,10 +6,28 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="menu">
-    <button id="battleBtn" class="active" onclick="UI.showSection('battle')">⚔️ Battle</button>
-    <button id="shopBtn" onclick="UI.showSection('shop')">🛒 Shop</button>
-    <button id="petsBtn" onclick="UI.showSection('pets')">🐾 Pets</button>
+  <!-- Hamburger Menu Button -->
+  <button id="hamburgerBtn" class="hamburger-btn">☰</button>
+  
+  <!-- Hamburger Menu Overlay -->
+  <div id="menuOverlay" class="menu-overlay">
+    <div id="hamburgerMenu" class="hamburger-menu">
+      <div class="menu-header">
+        <h2>EmberVale</h2>
+        <button id="closeMenuBtn" class="close-btn">✕</button>
+      </div>
+      <nav class="menu-nav">
+        <button class="menu-item active" data-section="battle">⚔️ Battle</button>
+        <button class="menu-item" data-section="shop">🛒 Shop</button>
+        <button class="menu-item" data-section="pets">🐾 Pets</button>
+        <button class="menu-item" data-section="stats">📈 Stats</button>
+        <button class="menu-item" data-section="equipment">⚖️ Equipment</button>
+        <button class="menu-item" data-section="achievements">🏆 Achievements</button>
+        <button class="menu-item" data-section="collections">📚 Collections</button>
+        <button class="menu-item" data-section="leaderboard">🥇 Leaderboard</button>
+        <button class="menu-item" data-section="blacksmith">⚒️ Blacksmith</button>
+      </nav>
+    </div>
   </div>
 
   <h1>EmberVale</h1>
@@ -53,6 +71,195 @@
     <div class="pets">
       <h2>🐾 Your Pets</h2>
       <div id="petsList"></div>
+    </div>
+  </div>
+
+  <!-- STATS SECTION -->
+  <div id="stats" class="section">
+    <div class="content-container">
+      <h2>📈 Stat Allocation</h2>
+      
+      <div class="stat-allocation">
+        <div class="currency-display">
+          <p>💎 Diamonds: <span id="diamondCount">1000</span></p>
+          <p>📊 Available Stat Points: <span id="availablePoints">0</span></p>
+        </div>
+
+        <div class="stat-allocator">
+          <div class="stat-row">
+            <div class="stat-info">
+              <h3>⚔️ Attack</h3>
+              <p>Allocated: <span id="allocatedAttack">0</span> points</p>
+              <p>Bonus Damage: <span id="attackBonus">0</span></p>
+            </div>
+            <div class="stat-buttons">
+              <button onclick="UI.allocateStatPoints('attack', 1)">+1</button>
+              <button onclick="UI.allocateStatPoints('attack', 5)">+5</button>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-info">
+              <h3>💪 Stamina</h3>
+              <p>Allocated: <span id="allocatedStamina">0</span> points</p>
+              <p>Max Stamina: <span id="maxStaminaDisplay">50</span></p>
+            </div>
+            <div class="stat-buttons">
+              <button onclick="UI.allocateStatPoints('stamina', 1)">+1</button>
+              <button onclick="UI.allocateStatPoints('stamina', 5)">+5</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="respec-section">
+          <h3>🔄 Reset Stats</h3>
+          <p>Reset all allocated stat points for 100 diamonds</p>
+          <button id="respecBtn" onclick="UI.respecStats()">Respec (100 💎)</button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Combat Stats</h3>
+          <p>Total Attack: <span id="totalAttackDisplay">250</span></p>
+          <p>Bonus Damage: <span id="bonusDamageDisplay">0</span>%</p>
+          <p>Crit Rate: <span id="critRateDisplay">0</span>%</p>
+          <p>Crit Damage: <span id="critDamageDisplay">50</span>%</p>
+        </div>
+        <div class="stat-card">
+          <h3>Progress Stats</h3>
+          <p>Level: <span id="playerLevelDisplay">1</span></p>
+          <p>Gold: <span id="goldDisplay">100</span></p>
+          <p>Pet Food: <span id="petFoodDisplay">0</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EQUIPMENT SECTION -->
+  <div id="equipment" class="section">
+    <div class="content-container">
+      <h2>⚖️ Equipment</h2>
+      <div class="equipment-grid">
+        <div class="equipment-slot">
+          <h3>🗡️ Weapon</h3>
+          <div class="item-slot empty">No weapon equipped</div>
+        </div>
+        <div class="equipment-slot">
+          <h3>🛡️ Armor</h3>
+          <div class="item-slot empty">No armor equipped</div>
+        </div>
+        <div class="equipment-slot">
+          <h3>💍 Accessory</h3>
+          <div class="item-slot empty">No accessory equipped</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS SECTION -->
+  <div id="achievements" class="section">
+    <div class="content-container">
+      <h2>🏆 Achievements</h2>
+      <div class="achievements-list">
+        <div class="achievement-item locked">
+          <div class="achievement-icon">🥉</div>
+          <div class="achievement-info">
+            <h3>First Steps</h3>
+            <p>Reach level 5</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 20%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="achievement-item locked">
+          <div class="achievement-icon">⚔️</div>
+          <div class="achievement-info">
+            <h3>Monster Slayer</h3>
+            <p>Defeat 100 monsters</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLLECTIONS SECTION -->
+  <div id="collections" class="section">
+    <div class="content-container">
+      <h2>📚 Collections</h2>
+      <div class="collection-tabs">
+        <button class="tab-btn active">Monsters</button>
+        <button class="tab-btn">Items</button>
+        <button class="tab-btn">Pets</button>
+      </div>
+      <div class="collection-grid">
+        <div class="collection-item">
+          <div class="item-icon">👹</div>
+          <h4>Goblin</h4>
+          <p>Defeated: 0</p>
+        </div>
+        <div class="collection-item locked">
+          <div class="item-icon">🧌</div>
+          <h4>???</h4>
+          <p>Not discovered</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD SECTION -->
+  <div id="leaderboard" class="section">
+    <div class="content-container">
+      <h2>🥇 Leaderboard</h2>
+      <div class="leaderboard-tabs">
+        <button class="tab-btn active">Level</button>
+        <button class="tab-btn">Damage</button>
+        <button class="tab-btn">Gold</button>
+      </div>
+      <div class="leaderboard-list">
+        <div class="leaderboard-entry">
+          <span class="rank">1</span>
+          <span class="player">Player123</span>
+          <span class="score">Level 50</span>
+        </div>
+        <div class="leaderboard-entry">
+          <span class="rank">2</span>
+          <span class="player">DragonSlayer</span>
+          <span class="score">Level 48</span>
+        </div>
+        <div class="leaderboard-entry current">
+          <span class="rank">156</span>
+          <span class="player">You</span>
+          <span class="score">Level 1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLACKSMITH SECTION -->
+  <div id="blacksmith" class="section">
+    <div class="content-container">
+      <h2>⚒️ Blacksmith</h2>
+      <div class="blacksmith-options">
+        <div class="blacksmith-service">
+          <h3>🔨 Upgrade Equipment</h3>
+          <p>Enhance your weapons and armor</p>
+          <button disabled>Coming Soon</button>
+        </div>
+        <div class="blacksmith-service">
+          <h3>⚡ Enchant Items</h3>
+          <p>Add magical properties to equipment</p>
+          <button disabled>Coming Soon</button>
+        </div>
+        <div class="blacksmith-service">
+          <h3>🛠️ Repair Equipment</h3>
+          <p>Restore damaged items</p>
+          <button disabled>Coming Soon</button>
+        </div>
+      </div>
     </div>
   </div>
 

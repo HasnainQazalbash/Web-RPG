@@ -4,17 +4,28 @@ const GameState = {
         level: 1,
         exp: 0,
         expToLevel: 100,
-        stamina: 1000,
-        maxStamina: 1000,
-        gold: 1000000000,
-        baseAttack: 10,
-        petFood: 0
+        stamina: 50,
+        maxStamina: 50,
+        gold: 100,
+        diamonds: 1000,
+        petFood: 0,
+        
+        // Base stats
+        baseAttack: 5,
+        
+        // Stat allocation
+        availableStatPoints: 0,
+        allocatedStats: {
+            attack: 0,
+            stamina: 0
+        }
     },
     
     combat: {
-        totalAttack: 10,
-        critRate: 5,
-        critDamage: 150
+        totalAttack: 250, // base 5 * 50 = 250
+        bonusDamage: 0,
+        critRate: 0,
+        critDamage: 50
     },
     
     stamina: {
@@ -31,6 +42,13 @@ const GameState = {
             ...mob,
             currentHP: mob.maxHP,
             pendingRespawn: false
+        }));
+        
+        // Initialize pets with new costs and bonuses
+        this.pets = PET_TYPES.map(pet => ({
+            ...pet,
+            owned: false,
+            level: 0
         }));
     }
 };

@@ -1,18 +1,26 @@
 // js/combat.js - Combat System
 const Combat = {
     calculateStats() {
-        let totalAttack = GameState.player.baseAttack;
-        let damageMultiplier = 1; // Removed dragon bonus
-        let critRate = 5;
-        let critDamage = 150;
-
-        // Add pet bonuses
+        // Base attack calculation: base 5 + allocated points * 50
+        let baseAttackDamage = (GameState.player.baseAttack + GameState.player.allocatedStats.attack) * 50;
+        
+        // Pet attack bonuses
+        let petAttackBonus = 0;
         GameState.pets.forEach(pet => {
             if (pet.owned && pet.level > 0) {
-                totalAttack += pet.baseAttack * pet.level;
-                
+                petAttackBonus += pet.baseAttack * pet.level;
+            }
+        });
+        
+        // Calculate bonus damage percentage from pets
+        let bonusDamagePercent = 0;
+        let critRate = 0;
+        let critDamage = 50; // Base 50%
+        
+        GameState.pets.forEach(pet => {
+            if (pet.owned && pet.level > 0) {
                 if (pet.type === "damage") {
-                    damageMultiplier += (pet.bonusPerLevel * pet.level) / 100;
+                    bonusDamagePercent += pet.bonusPerLevel * pet.level;
                 } else if (pet.type === "crit_rate") {
                     critRate += pet.bonusPerLevel * pet.level;
                 } else if (pet.type === "crit_damage") {
@@ -21,7 +29,12 @@ const Combat = {
             }
         });
 
-        GameState.combat.totalAttack = Math.floor(totalAttack * damageMultiplier);
+        // Final calculations
+        let totalAttack = baseAttackDamage + petAttackBonus;
+        totalAttack = Math.floor(totalAttack * (1 + bonusDamagePercent / 100));
+
+        GameState.combat.totalAttack = totalAttack;
+        GameState.combat.bonusDamage = bonusDamagePercent;
         GameState.combat.critRate = critRate;
         GameState.combat.critDamage = critDamage;
     },
@@ -68,7 +81,6 @@ const Combat = {
         // Rewards
         Player.gainExp(mob.expReward);
         Player.gainGold(mob.goldReward);
-        // Removed Dragon.gainExp(damage);
         
         Utils.showLootNotification(mob.expReward, mob.goldReward);
 
