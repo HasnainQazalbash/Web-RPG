@@ -21,27 +21,22 @@ const UI = {
     initHamburgerMenu() {
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const menuOverlay = document.getElementById('menuOverlay');
-        const closeMenuBtn = document.getElementById('closeMenuBtn');
         const menuItems = document.querySelectorAll('.menu-item');
 
-        // Open menu
-        hamburgerBtn.addEventListener('click', () => {
-            menuOverlay.classList.add('active');
+        // Toggle menu on hamburger button click
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            menuOverlay.classList.toggle('active');
         });
 
-        // Close menu
-        closeMenuBtn.addEventListener('click', () => {
-            menuOverlay.classList.remove('active');
-        });
-
-        // Close menu when clicking overlay
+        // Close menu when clicking overlay (dark background)
         menuOverlay.addEventListener('click', (e) => {
             if (e.target === menuOverlay) {
                 menuOverlay.classList.remove('active');
             }
         });
 
-        // Menu item clicks
+        // Menu item clicks - close menu after selection
         menuItems.forEach(item => {
             item.addEventListener('click', () => {
                 const section = item.getAttribute('data-section');

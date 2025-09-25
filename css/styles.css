@@ -9,6 +9,16 @@ body {
   padding: 20px;
 }
 
+.main-content {
+  margin-left: 80px; /* Push main content right of hamburger */
+  padding-left: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
 /* HAMBURGER MENU STYLES */
 .hamburger-btn {
   position: fixed;
@@ -68,10 +78,7 @@ body {
 }
 
 .menu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
+  padding: 50px 20px; /* Tripled from 20px to 60px */
   background: #3e3e50;
   border-bottom: 2px solid #4CAF50;
 }
@@ -79,21 +86,6 @@ body {
 .menu-header h2 {
   margin: 0;
   color: #4CAF50;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: #f1f1f1;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 3px;
-  transition: background 0.3s;
-}
-
-.close-btn:hover {
-  background: rgba(255,255,255,0.1);
 }
 
 .menu-nav {

@@ -22,7 +22,17 @@ const Game = {
             console.log("Game initialized successfully");
             
             // Start stamina regeneration timer
-            setInterval(() => {
+            this.startStaminaTimer();
+            
+        } catch (error) {
+            console.error("Game initialization failed:", error);
+            alert("Game failed to load. Check console for details.");
+        }
+    },
+
+    startStaminaTimer() {
+        setInterval(() => {
+            try {
                 GameState.stamina.currentTimer--;
                 if (GameState.stamina.currentTimer <= 0) {
                     Player.refillStamina();
@@ -30,12 +40,10 @@ const Game = {
                     UI.updateAll();
                 }
                 UI.updateTimer();
-            }, 1000);
-            
-        } catch (error) {
-            console.error("Game initialization failed:", error);
-            alert("Game failed to load. Check console for details.");
-        }
+            } catch (error) {
+                console.error("Stamina timer error:", error);
+            }
+        }, 1000);
     }
 };
 
@@ -43,6 +51,7 @@ const Game = {
 window.Combat = Combat;
 window.Shop = Shop;
 window.UI = UI;
+window.Player = Player;
 
 // Initialize game when page loads
 document.addEventListener('DOMContentLoaded', () => {

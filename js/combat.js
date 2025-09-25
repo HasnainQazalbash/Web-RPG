@@ -92,3 +92,6 @@ const Combat = {
         }, 3000);
     }
 };
+
+// Make Combat globally accessible
+window.Combat = Combat;

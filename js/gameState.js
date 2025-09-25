@@ -4,9 +4,9 @@ const GameState = {
         level: 1,
         exp: 0,
         expToLevel: 100,
-        stamina: 50,
-        maxStamina: 50,
-        gold: 100,
+        stamina: 1000,
+        maxStamina: 1000,
+        gold: 1000000000,
         diamonds: 1000,
         petFood: 0,
         

@@ -1,94 +1,84 @@
-// js/combat.js - Combat System
-const Combat = {
-    calculateStats() {
-        // Base attack calculation: base 5 + allocated points * 50
-        let baseAttackDamage = (GameState.player.baseAttack + GameState.player.allocatedStats.attack) * 50;
-        
-        // Pet attack bonuses
-        let petAttackBonus = 0;
-        GameState.pets.forEach(pet => {
-            if (pet.owned && pet.level > 0) {
-                petAttackBonus += pet.baseAttack * pet.level;
-            }
-        });
-        
-        // Calculate bonus damage percentage from pets
-        let bonusDamagePercent = 0;
-        let critRate = 0;
-        let critDamage = 50; // Base 50%
-        
-        GameState.pets.forEach(pet => {
-            if (pet.owned && pet.level > 0) {
-                if (pet.type === "damage") {
-                    bonusDamagePercent += pet.bonusPerLevel * pet.level;
-                } else if (pet.type === "crit_rate") {
-                    critRate += pet.bonusPerLevel * pet.level;
-                } else if (pet.type === "crit_damage") {
-                    critDamage += pet.bonusPerLevel * pet.level;
-                }
-            }
-        });
-
-        // Final calculations
-        let totalAttack = baseAttackDamage + petAttackBonus;
-        totalAttack = Math.floor(totalAttack * (1 + bonusDamagePercent / 100));
-
-        GameState.combat.totalAttack = totalAttack;
-        GameState.combat.bonusDamage = bonusDamagePercent;
-        GameState.combat.critRate = critRate;
-        GameState.combat.critDamage = critDamage;
-    },
-
-    calculateDamage(baseAttack, staminaCost) {
-        let baseDamage = baseAttack * staminaCost;
-        let isCrit = Math.random() < (GameState.combat.critRate / 100);
-        let finalDamage = isCrit ? baseDamage * (GameState.combat.critDamage / 100) : baseDamage;
-        
-        return { damage: finalDamage, isCrit };
-    },
-
-    attackMob(mobIndex, staminaCost) {
-        const mob = GameState.mobs[mobIndex];
-        
-        if (!Player.spendStamina(staminaCost) || mob.pendingRespawn) {
-            return;
+// js/player.js - Player Management
+const Player = {
+    levelUp() {
+        while (GameState.player.exp >= GameState.player.expToLevel) {
+            GameState.player.exp -= GameState.player.expToLevel;
+            GameState.player.level++;
+            GameState.player.expToLevel = Math.floor(GameState.player.expToLevel * 1.2);
+            
+            // Give 5 stat points per level
+            GameState.player.availableStatPoints += 5;
         }
-
-        const { damage, isCrit } = this.calculateDamage(GameState.combat.totalAttack, staminaCost);
-        
-        // Show damage popup
-        const mobCard = document.getElementById("mobCard" + mobIndex);
-        Utils.showDamagePopup(damage, isCrit, mobCard);
-
-        // Apply damage
-        if (mob.currentHP > 0) {
-            mob.currentHP = Math.max(0, mob.currentHP - damage);
-
-            // If mob dies
-            if (mob.currentHP <= 0) {
-                this.killMob(mobIndex, damage);
-            }
-        }
-
-        UI.updateAll();
     },
 
-    killMob(mobIndex, damage) {
-        const mob = GameState.mobs[mobIndex];
-        mob.currentHP = 0;
-        mob.pendingRespawn = true;
+    gainExp(amount) {
+        GameState.player.exp += amount;
+        this.levelUp();
+    },
 
-        // Rewards
-        Player.gainExp(mob.expReward);
-        Player.gainGold(mob.goldReward);
-        
-        Utils.showLootNotification(mob.expReward, mob.goldReward);
+    gainGold(amount) {
+        GameState.player.gold += amount;
+    },
 
-        // Respawn after 3 seconds
-        setTimeout(() => {
-            mob.currentHP = mob.maxHP;
-            mob.pendingRespawn = false;
-            UI.updateAll();
-        }, 3000);
+    gainDiamonds(amount) {
+        GameState.player.diamonds += amount;
+    },
+
+    spendStamina(amount) {
+        if (GameState.player.stamina >= amount) {
+            GameState.player.stamina -= amount;
+            return true;
+        }
+        return false;
+    },
+
+    refillStamina() {
+        GameState.player.stamina = Math.min(
+            GameState.player.stamina + Math.floor(GameState.player.maxStamina * 1), 
+            GameState.player.maxStamina
+        );
+    },
+
+    // Stat allocation functions
+    allocateStats(statType, amount) {
+        if (GameState.player.availableStatPoints >= amount) {
+            GameState.player.availableStatPoints -= amount;
+            GameState.player.allocatedStats[statType] += amount;
+            
+            // Apply stat effects
+            if (statType === 'stamina') {
+                GameState.player.maxStamina += amount;
+                GameState.player.stamina += amount; // Also increase current stamina
+            }
+            
+            return true;
+        }
+        return false;
+    },
+
+    // Respec function
+    respecStats() {
+        const respecCost = 100; // diamonds
+        if (GameState.player.diamonds >= respecCost) {
+            GameState.player.diamonds -= respecCost;
+            
+            // Return all allocated points
+            const totalAllocated = GameState.player.allocatedStats.attack + GameState.player.allocatedStats.stamina;
+            GameState.player.availableStatPoints += totalAllocated;
+            
+            // Reset stamina based on removed points
+            GameState.player.maxStamina -= GameState.player.allocatedStats.stamina;
+            GameState.player.stamina = Math.min(GameState.player.stamina, GameState.player.maxStamina);
+            
+            // Reset allocated stats
+            GameState.player.allocatedStats.attack = 0;
+            GameState.player.allocatedStats.stamina = 0;
+            
+            return true;
+        }
+        return false;
     }
 };
+
+// Make Player globally accessible
+window.Player = Player;
